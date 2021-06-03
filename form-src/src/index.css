@@ -1,0 +1,73 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: #fafafa;
+  font-family: 'Helvetica Neue', arial, sans-serif;
+  font-weight: 400;
+  color: #444;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+  text-align: center;
+  /*background-color: #673ab8;*/
+  /*color: #fff;*/
+  font-size: 1.5em;
+  height: 100%;
+}
+
+.imageInput {
+  border: 1px dashed black;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.imageInput::before {
+  content: 'Paste or Drop Image here';
+  position: absolute;
+  text-align: center;
+  left: 0;
+  top: 45%;
+  width: 100%;
+  z-index: -1;
+}
+
+.imageInput__target {
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+.imageInput__target__over {
+  background: cornflowerblue;
+}
+
+.imageInput__buttons {
+  pointer-events: none;
+}
+
+.imageInput__buttons > * {
+  pointer-events: initial;
+}
+
+.btn {
+  font-size: 16px;
+  padding: 5px 10px;
+  margin: 25px 10px;
+}
