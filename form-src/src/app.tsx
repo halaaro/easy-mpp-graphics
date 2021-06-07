@@ -5,16 +5,6 @@ import { Button } from './components/Button'
 import { FileDropArea } from './containers/FileDropArea'
 import { ImageUploadConfirm } from './containers/ImageUploadConfirm'
 
-declare global {
-  /* makes typescript happy */
-  interface Window {
-    /* should be provided by caller */
-    _handleSearch: () => void
-    _handleUpload: (file: File) => void
-    _handleInvalid: () => void
-  }
-}
-
 export function App() {
   const [imageFile, setImageFile] = useState<File | null>(null)
 
@@ -29,9 +19,9 @@ export function App() {
       : window.alert(`Unable to upload ${imageFile?.name} to vault`)
 
   const imageAccept = ['image/png', 'image/jpeg']
-  const handleInvalid = () =>
-    window._handleInvalid
-      ? window._handleInvalid()
+  const handleInvalidType = () =>
+    window._handleInvalidType
+      ? window._handleInvalidType('Only PNG and JPEG images are allowed!')
       : window.alert('Only PNG and JPEG images are allowed!')
 
   console.log(imageFile)
@@ -39,7 +29,7 @@ export function App() {
     <FileDropBehavior
       accept={imageAccept}
       onSelect={setImageFile}
-      onInvalid={handleInvalid}
+      onInvalid={handleInvalidType}
       render={(handlers) => (
         <ImageUploadConfirm
           {...handlers}
@@ -53,7 +43,7 @@ export function App() {
     <FileDropArea
       accept={imageAccept}
       onSelect={(newFile) => setImageFile(newFile)}
-      onInvalid={handleInvalid}
+      onInvalid={handleInvalidType}
     >
       <Button onClick={handleSearch} label="Search Existing..." />
     </FileDropArea>
