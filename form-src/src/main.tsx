@@ -22,23 +22,24 @@ declare global {
 }
 
 if (window.arasArgs) {
+  const args = window.arasArgs
   window._handleInvalidType = (msg: string) => {
-    window.arasArgs.errorMessage(msg)
+    args.errorMessage(msg)
   }
   window._handleSearch = () => {
-    window.arasArgs.dialog.close()
-    window.arasArgs.search()
+    args.dialog.close()
+    args.search()
   }
   window._handleUpload = (file: File) => {
-    const result = window.arasArgs.upload(file)
+    const result = args.upload(file)
     if (result && !result.error) {
-      window.arasArgs.dialog.close()
+      args.dialog.close()
     } else {
-      console.warn('error from aras:', result)
+      console.warn('error result from aras:', result)
     }
   }
 } else {
-  console.warn('arasArgs not found, running outside innovator?')
+  console.warn('Global arasArgs not found. Running outside innovator dialog?')
 }
 
 render(<App />, document.getElementById('app')!)

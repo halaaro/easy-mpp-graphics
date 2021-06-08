@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { FileInputButton } from '../components/FileInputButton'
 import { FileDropBehavior } from '../behaviors/FileDropBehavior'
 import { JSX } from 'preact'

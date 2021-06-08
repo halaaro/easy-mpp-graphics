@@ -24,7 +24,6 @@ export function App() {
       ? window._handleInvalidType('Only PNG and JPEG images are allowed!')
       : window.alert('Only PNG and JPEG images are allowed!')
 
-  console.log(imageFile)
   return imageFile != null ? (
     <FileDropBehavior
       accept={imageAccept}

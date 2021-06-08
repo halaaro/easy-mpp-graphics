@@ -1,4 +1,3 @@
-import { useRef } from 'preact/hooks'
 import { Button } from './Button'
 
 export function FileInputButton(props: {
@@ -6,19 +5,18 @@ export function FileInputButton(props: {
   onInvalid?: (file: File) => void
   accept?: Array<string>
 }) {
-  const fileInput = useRef<HTMLInputElement>(null)
-
   const accept = (props.accept && props.accept.join(', ')) || '*.*'
 
   function handleClick(event: MouseEvent) {
-    console.log(event)
     event.preventDefault()
-    fileInput.current.click()
+    const fileInput = event.target as HTMLInputElement
+    fileInput.click()
   }
 
   function handleChange(event: Event) {
-    console.log(event)
-    const file0 = (fileInput.current.files || [])[0]
+    event.preventDefault()
+    const fileInput = event.target as HTMLInputElement
+    const file0 = (fileInput.files || [])[0]
     if (file0) {
       if (props.accept && !props.accept.includes(file0.type)) {
         props.onInvalid && props.onInvalid(file0)
@@ -26,7 +24,6 @@ export function FileInputButton(props: {
       }
       props.onSelectFile(file0)
     }
-    event.preventDefault()
   }
 
   return (
@@ -40,7 +37,6 @@ export function FileInputButton(props: {
         label="Browse..."
       ></Button>
       <input
-        ref={fileInput}
         id="FileInputButton__input"
         style="height: 0; opacity: 0; position: absolute; pointer-events: none;"
         onChange={(e) => handleChange(e)}
