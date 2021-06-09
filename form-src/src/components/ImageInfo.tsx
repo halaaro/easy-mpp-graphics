@@ -5,12 +5,16 @@ export function ImageInfo(props: {
   dimensions?: { width: number; height: number }
 }) {
   return (
-    <div class="ImageInfo">
-      <div>File: {props.name} </div>
-      <div>Size: {formatSizeKB(props.size)} KB </div>
-      <div>Modified: {formatModified(props.modified)}</div>
+    <div class="ImageInfo" data-test-id="ImageInfo">
+      <div data-test-id="ImageInfo_filename">File: {props.name} </div>
+      <div data-test-id="ImageInfo_size">
+        Size: {formatSizeKB(props.size)} KB{' '}
+      </div>
+      <div data-test-id="ImageInfo_modified">
+        Modified: {formatModified(props.modified)}
+      </div>
       {props.dimensions && (
-        <div>
+        <div data-test-id="ImageInfo_dimensions">
           Dimensions: {props.dimensions.width} x {props.dimensions.height}
         </div>
       )}

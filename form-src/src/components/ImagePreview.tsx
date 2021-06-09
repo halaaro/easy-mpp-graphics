@@ -22,7 +22,7 @@ export function ImagePreview(props: {
   }
 
   return (
-    <div class="ImagePreview">
+    <div class="ImagePreview" data-test-id="ImagePreview">
       <img onLoad={handleLoad} class="ImagePreview__img" src={previewUrl} />
     </div>
   )

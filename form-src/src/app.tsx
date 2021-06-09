@@ -22,7 +22,7 @@ export function App() {
   const handleInvalidType = () =>
     window._handleInvalidType
       ? window._handleInvalidType('Only PNG and JPEG images are allowed!')
-      : window.alert('Only PNG and JPEG images are allowed!')
+      : window.alert('Invalid file. Only PNG and JPEG images are allowed!')
 
   return imageFile != null ? (
     <FileDropBehavior
@@ -44,7 +44,9 @@ export function App() {
       onSelect={(newFile) => setImageFile(newFile)}
       onInvalid={handleInvalidType}
     >
-      <Button onClick={handleSearch} label="Search Existing..." />
+      <Button data-test-id="SearchButton" onClick={handleSearch}>
+        Search Existing...
+      </Button>
     </FileDropArea>
   )
 }

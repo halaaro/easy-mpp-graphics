@@ -8,7 +8,9 @@ export function CancelButton(props: {
       class="CancelButton"
       title="Cancel"
       onClick={props.onClick}
-      label="&times;"
-    />
+      data-test-id="FileUploadForm_cancelButton"
+    >
+      &times;
+    </Button>
   )
 }

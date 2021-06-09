@@ -11,9 +11,11 @@ export function FileUploadForm(props: { onConfirm: () => void }) {
         <Button
           class="FileUploadForm__submitButton"
           type="submit"
-          label="Upload"
           onClick={handleConfirm}
-        />
+          data-test-id="FileUploadForm_submitButton"
+        >
+          Upload
+        </Button>
       </div>
     </form>
   )

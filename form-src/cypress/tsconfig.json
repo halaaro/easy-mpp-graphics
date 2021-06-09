@@ -1,0 +1,5 @@
+{
+  "compilerOptions": {
+    "types": ["cypress", "cypress-file-upload", "@types/node"]
+  }
+}

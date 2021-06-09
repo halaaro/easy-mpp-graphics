@@ -9,19 +9,20 @@ export function FileDropArea(props: {
   accept?: Array<string>
   children: JSX.Element
 }) {
-  const [dropTarget, setDropTarget] = useState(false)
+  const [dropTargetActive, setDropTargetActive] = useState(false)
   const handleSelectFile = (file: File) => props.onSelect(file)
   return (
     <FileDropBehavior
       accept={props.accept}
       onSelect={props.onSelect}
       onInvalid={props.onInvalid}
-      onActive={setDropTarget}
+      onActive={setDropTargetActive}
       render={(handlers) => (
-        <div class="FileDropArea">
+        <div class="FileDropArea" data-test-id="FileDropArea">
           <div
+            data-test-id="FileDropArea_target"
             class={`FileDropArea__target ${
-              dropTarget ? 'FileDropArea__target__over' : ''
+              dropTargetActive ? 'FileDropArea__target__over' : ''
             }`}
             {...handlers}
           ></div>
