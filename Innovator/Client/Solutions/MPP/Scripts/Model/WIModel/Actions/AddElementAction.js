@@ -6,14 +6,13 @@
 function(declare, AddElementAction, Enums) {
 	return declare('Aras.Client.Controls.MPP.Action.AddElementAction', AddElementAction, {
 		Execute: function(/*Object*/args) {
-
 			var contextObject = args.context;
 			var direction = args.direction;
 			var newElementName = args.elementName;
 			var newElement = null;
 			var schemaHelper = this._viewmodel.Schema();
 
-			if (newElementName == 'External Content') {
+			if (newElementName === 'External Content') {
 				var searchNames = [];
 				var expectedElements = schemaHelper.GetExpectedElements(contextObject);
 
@@ -24,27 +23,29 @@ function(declare, AddElementAction, Enums) {
 					case 'insert':
 						searchNames = expectedElements.insert;
 						break;
+					default:
+						break;
 				}
 
 				this._SearchBlock(searchNames,
 					function(/*Array*/ selectedBlockIds) {
-						if (selectedBlockIds && selectedBlockIds.length)  {
-							var blockId;
-							var i;
+						if (selectedBlockIds && selectedBlockIds.length) 	{
+							var blockId, i;
 
 							for (i = 0; i < selectedBlockIds.length; i++) {
 								blockId = selectedBlockIds[i];
 								newElement = this._GetArasBlockElement(blockId);
 
 								if (newElement) {
-									var tryMode = (direction == 'insert') ? 'into' : 'after';
+									var tryMode = (direction === 'insert') ? 'into' : 'after';
 									var validationResult = schemaHelper.TryCandidatesAt({context: contextObject, values: [newElement], mode: tryMode});
 
 									if (validationResult.isValid) {
 										this._addElement(contextObject, newElement, direction);
 									} else {
 										newElement.unregisterDocumentElement();
-										this.aras.AlertError(this.aras.getResource('../Modules/aras.innovator.TDF', 'action.cannotaddexternalblock', newElement.GetProperty('name')));
+										this.aras.AlertError(this.aras.getResource('../Modules/aras.innovator.TDF',
+										'action.cannotaddexternalblock', newElement.GetProperty('name')));
 									}
 								}
 							}
@@ -53,29 +54,29 @@ function(declare, AddElementAction, Enums) {
 				);
 
 				return;
-			} else if (newElementName == '#text') {
+			} else if (newElementName === '#text') {
 				newElement = this._viewmodel.CreateElement('text', {});
 
 				this._addElement(contextObject, newElement, direction);
 			} else {
 				var elementType = schemaHelper.GetSchemaElementType(newElementName);
 
-				if ((elementType & Enums.XmlSchemaElementType.Table) == Enums.XmlSchemaElementType.Table) {
+				if ((elementType & Enums.XmlSchemaElementType.Table) === Enums.XmlSchemaElementType.Table) {
 					this.actionsHelper.executeAction('tableactions', {
 						action: 'table',
 						createHelper: {
-							'direction': direction,
-							'newElementName': newElementName,
+							direction: direction,
+							newElementName: newElementName,
 							updateClassification: this._updateClassification.bind(this),
 							contextObject: contextObject
 						}
 					});
-				} else if (((elementType & Enums.XmlSchemaElementType.Image) == Enums.XmlSchemaElementType.Image) ||
-					((elementType & Enums.XmlSchemaElementType.Item) == Enums.XmlSchemaElementType.Item)) {
+				} else if (((elementType & Enums.XmlSchemaElementType.Image) === Enums.XmlSchemaElementType.Image) ||
+					((elementType & Enums.XmlSchemaElementType.Item) === Enums.XmlSchemaElementType.Item)) {
 					var contentHelper = this._viewmodel.ContentGeneration();
 					var elementOrigin = contentHelper.ConstructDefaultOrigin(newElementName);
 
-					if ((elementType & Enums.XmlSchemaElementType.Image) == Enums.XmlSchemaElementType.Image) {
+					if ((elementType & Enums.XmlSchemaElementType.Image) === Enums.XmlSchemaElementType.Image) {
 						var callback = function(result) {
 							this._updateClassification({
 								newElementName: newElementName,
@@ -94,7 +95,7 @@ function(declare, AddElementAction, Enums) {
 
 							this._addElement(contextObject, newElement, direction);
 
-							if (newElement.ContentType() == Enums.ElementContentType.Static) {
+							if (newElement.ContentType() === Enums.ElementContentType.Static) {
 								contentHelper.refreshStaticContent(newElement);
 							}
 						}.bind(this);
@@ -113,8 +114,9 @@ function(declare, AddElementAction, Enums) {
 							function(result) {
 								var resItem = result.item;
 
-								//we have to get original item type because tp_Item doesn't have all required properties in order to perform custom rendering if it exists
-								if (typeId == 'DE828FBA99FF4ABB9E251E8A4118B397') {// tp_Item
+								//we have to get original item type because tp_Item doesn't have all required properties
+								//in order to perform custom rendering if it exists
+								if (typeId === 'DE828FBA99FF4ABB9E251E8A4118B397') {// tp_Item
 									var itemQuery = this.aras.newIOMItem();
 									var itemId = this.aras.getItemProperty(resItem, 'id');
 
@@ -135,7 +137,7 @@ function(declare, AddElementAction, Enums) {
 
 								this._addElement(contextObject, newElement, direction);
 
-								if (newElement.ContentType() == Enums.ElementContentType.Static) {
+								if (newElement.ContentType() === Enums.ElementContentType.Static) {
 									contentHelper.refreshStaticContent(newElement);
 								}
 							}.bind(this)
