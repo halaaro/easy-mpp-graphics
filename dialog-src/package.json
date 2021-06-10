@@ -1,8 +1,11 @@
 {
-  "version": "0.0.0",
+  "name": "EasyGraphicUpload",
+  "version": "0.1.0",
+  "author": "Aaron Haley",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --emptyOutDir",
     "serve": "vite preview",
     "test": "cypress run"
   },

@@ -2,50 +2,54 @@
 
 ## Description
 
-The goal of this enhancement is to create an easy way to add graphics to MPP. Something more like what you can do in Word: copy-paste or drag & drop. Secondarily, we would like to enable the user to resize images or apply other edits before uploading.
+The goal of this package is to provide an easy way to add graphics to Aras Innovator's MPP Process Plans. Something more like what you can do in Office: quickly insert or drag & drop images while authoring the document.
+
 
 ### State of the Art
 
-Out of the box, we can insert an image into a process plan with the following steps:
+Out of the box with MPP, we can insert a new image into a process plan with the following steps:
 
-1. Navigate to `Graphics` in TOC
-2. Add new (form appears)
-3. Click `Select an Image...` (dialog appears)
-4. Choose External File tab
+1. Select `Graphics` in Aras Innovator TOC
+2. Click `Create new Item` button (Graphics form appears)
+3. Click `Select an Image...` (image upload dialog appears)
+4. Choose `External File` tab
 5. Browse for image location
 6. Select image
-7. Enter image name
-8. Save, Unlock, and close graphic
-9. Open a Process Plan 
+7. Enter graphic number and name
+8. Save, unlock, and close graphic form
+9. Open (checked out) Process Plan 
 10. Right-click on the work instruction detail
-11. Choose `Add Graphic`
+11. Choose `Insert Graphic`
 12. Search for graphic by name
 
-Seems excessive, right? 
+Although this approach makes sense for default behavior--it is simple and easily customized to the business use case--it does require quite a bit of extra ceremony each time a new image needs to be added. For instance, when adding graphics for a specific process plan, we may not need to reuse the image and thus care little about the Graphic number or name. We just want to add our image without the fuss.
 
-There must be a better way! <a href="#fn1"><span id="r1">[1]</span></a>
+Seems excessive? 💥 There must be a better way! <a href="#fn1"><span id="r1">[1]</span></a>
 
-### Features
+### Solution Approach
 
-### 1. Add **Upload Graphic** context entry.
+Instead of forcing the user to leave the process plan, we give them the ability to upload images from the process plan directly. After upload we automatically create a graphic and insert it into the process plan, identically to if the graphic had already existed. Now users can more easily add graphics while authoring process plans.
 
-In the vanilla solution, only the Insert Graphics option is available. This is still available after this package is installed, but we also add a new menu option available after right-click. Instead of searching, it will show a form to directly upload the graphic.
 
-### 2. HTML form to allow browsing, **drag & drop**, or copy-paste.
+![img1](./img/screenshot1.png) ![img2](./img/screenshot2.png)
 
-We use a custom form to add support for drag & drop, and copy-paste in addition to the built-in browse functionality.
+## Features
 
-### 4. **Automatic naming** based on file-name / using MPP number (configurable)
+### **1. Upload graphics** directly from MPP Process Plan.
 
-Since we start in the context of an MPP, we can use that information to give the graphic a name that ties it to the MPP. The default behavior is to add a name with the MPP number as a prefix, followed by the file name.
+In the vanilla solution, `Insert Graphic` simply searches for an existing graphic. After installing this package, it will instead allow the user to upload and then directly insert an image into the process plan. The advantage of this is that it avoids the context switching caused by leaving the process plan, going to graphics, uploading the image, setting the number, etc. Now users can quickly upload the graphics when needed. The old behavior of searching for an existing graphic to insert is also still available.
 
-### 3. Preview of image with common **quick editing** features before uploading.
+### **2. Custom dialog** to allow drag & drop or manual selection of image files.
 
-When an image is selected, we show a preview of the image and allow the user to manipulate in javascript (client-side). This makes edits much quicker and avoids the need for an outside tool to postprocess images before uploading. Common features needed are to crop and resize.
+We use a custom dialog to add support for drag & drop of images from the users computer. We also support the ability to browse for images to upload from the dialog.
 
-### Other Solutions
+### **3. Preview image** and image information before uploading.
 
- A community package (https://github.com/AngelaIp/aras-image-uploader-for-tech-docs) also exists to improve part of the process. However it still requires the user to leave the Process Plan and manually upload the images before returning and also forces the user to search for the graphic(s) just added. Another downside of the approach is it encourages batching instead of a JIT workflow.</p>
+After an image file is selected, we show a preview of the image along with other metadata of the image file. This makes it easy to identify if the wrong image was selected or if the image needs more processing before uploading (eg. it is too big).
+
+### **4. Automatic numbering and naming** of Graphic.
+
+Since we start in the context of a process plan, we can use that to give the graphic a number that ties them together. The current behavior is to number the graphic as the process plan number combined with a timestamp. The Graphic name is populated from image file name. This behavior can be easily modified by updating the source code within this package. Search for `graphicPrefix` to see the relevant section.
 
 ## Project Details
 
@@ -53,13 +57,13 @@ When an image is selected, we show a preview of the image and allow the user to 
 
 Aras 11.0 SP9
 
-**Versions Tested:**
+**Versions tested:**
 
 Aras 11.0 SP9
 
 **Browsers Tested:**
 
-Chrome 91.0
+Chrome 91.0, Microsoft Edge 91-93
 
 ## Installation
 
@@ -68,41 +72,27 @@ Chrome 91.0
 
 ### Prerequisites
 
-1. Aras Innovator installed (version 11.0 SPx preferred)
-2. Aras Package Import tool
-3. Import package of this project
-4. MPP and/or Tech Docs must be installed in the target database
+1. Aras Innovator installed (version 11.0 SPx)
+2. MPP must be installed in the target database
 
-### Install Steps
+### Install steps
 
-#### Code tree Installation
-These code tree changes only contain a custom icon for the toolbar. If you wish to use your own icon, you may replace the .svg file in the `\Innovator\` folder with your own.
-
+#### Code Tree Installation
 1. Backup your code tree and store the archive in a safe place
-2. Navigate to your local `..\easy-mpp-graphics\` folder
-3. Copy the `\Innovator\` folder 
+2. Navigate to your local `easy-mpp-graphics\` folder
+3. Copy the `Innovator\` folder 
 4. Paste this at the root of your install directory
 + By default this is `C:\Program Files\Aras\Innovator\`
+5. Increment `cachingModule.filesRevision` in `Innovator\Client\web.config`
 
-#### Database Installation
-1. Backup your database and store the BAK file in a safe place.
-2. Open up the Aras Package Import tool.
-3. Enter your login credentials and click **Login**
-    * _Note: You must login as root for the package import to succeed!_
-4. Enter the package name in the TargetRelease field.
-    * Optional: Enter a description in the Description field.
-5. Enter the path to your local `..\easyMppGraphics\Import\imports.mf` file in the Manifest File field.
-6. Select **com.watlow.easyMppGraphics** in the Available for Import field.
-8. If the target database has the MPP application installed, select the **com.watlow.easyMppGraphics.mppOptions** package.
-9. Select Type = **Merge** and Mode = **Thorough Mode**.
-10. Click **Import** in the top left corner.
-11. Close the Aras Package Import tool.
-
-You are now ready to login to Aras and try out the image importer.
+Now you should be able to use this package.
 
 ## Usage
 
-TBD.
+1. Edit a Process Plan
+2. Right-click a work instruction detail and choose `Insert Graphic`
+3. Browse to select or drop an image file into the dialog
+4. Click upload to confirm the selection
 
 ## Contributing
 
@@ -112,15 +102,61 @@ TBD.
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request
 
+
+
+### Build Prerequisites
+
+The dialog sources can be built using Node and Yarn (optional). 
+
+ 1. Nodejs
+ 2. Yarn (optional)
+
+After installing the node and yarn, change to the `dialog-src` directory and install dependencies.
+```
+cd dialog-src
+yarn
+```
+
+### Building
+
+For running the dev server for development use
+```
+yarn dev
+```
+then go to [http://localhost:3000](http://localhost:3000). Features that require Innovator will call `window.alert` and show an error message. When run as a part of MPP they should work as expected. Therefore, to fully test the project, you must build and then copy the compiled app to the Innovator code tree and use from within MPP.
+
+To create a production build use
+```
+yarn build
+```
+This compiles the the [Preact](https://preactjs.com/) dialog sources into `Innovator\Client\scripts\EasyGraphicUpload`. From there you can copy to the Aras Innovator code tree as described above.
+
+
+### Testing
+End-to-end tests are built using [cypress](https://cypress.io) and located in the `dialog-src\cypress\integration` subdirectory. These expect the dev server to be running so first start that with
+
+```
+yarn dev
+```
+
+Then in a separate command window start the tests.
+```
+cd dialog-src
+yarn test
+```
+
+
 ## Credits
 
-Created by @haleytec.
+Created by @haleytec for use with [PLMAccelerate](http://web.archive.org/web/20201126204707/https://www.infor.com/products/plm-accelerate) at [Watlow](https://www.watlow.com).
 
-Inspired by [AngelaIp](https://github.com/AngelaIp) / [aras-image-uploader-for-tech-docs](https://github.com/AngelaIp/aras-image-uploader-for-tech-docs).
+## Prior Art
+
+The community package [Image Uploader for MPP and technical documents](https://github.com/AngelaIp/aras-image-uploader-for-tech-docs) by [AngelaIp](https://github.com/AngelaIp) provides a nice way to upload multiple images at once.</p>
 
 ## License
 
-This project is published to Github under the Microsoft Public License (MS-PL). See the [LICENSE file](./LICENSE.md) for license rights and limitations.
+Published to Github under the MIT license. See the [LICENSE file](./LICENSE.txt) for license rights and limitations.
 
 ---
 
