@@ -4,6 +4,7 @@ import { FileDropBehavior } from './behaviors/FileDropBehavior'
 import { Button } from './components/Button'
 import { FileDropArea } from './containers/FileDropArea'
 import { ImageUploadConfirm } from './containers/ImageUploadConfirm'
+import githubImgUrl from './assets/GitHub-Mark-32px.png'
 
 export function App() {
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -44,9 +45,14 @@ export function App() {
       onSelect={(newFile) => setImageFile(newFile)}
       onInvalid={handleInvalidType}
     >
-      <Button data-test-id="SearchButton" onClick={handleSearch}>
-        Search Existing...
-      </Button>
+      <>
+        <a href="https://github.com/halaaro/easy-mpp-graphics" class="githubLink" target="_blank">
+          <img src={githubImgUrl} title="github logo"></img>
+        </a>
+        <Button data-test-id="SearchButton" onClick={handleSearch}>
+          Search Existing...
+        </Button>
+      </>
     </FileDropArea>
   )
 }

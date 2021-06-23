@@ -179,3 +179,16 @@ body {
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
   margin-right: 20px;
 }
+
+.githubLink {
+  opacity: 0.2;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  transition: opacity 500ms;
+}
+
+.githubLink:hover {
+  opacity: 1;
+  transition: opacity 300ms;
+}
