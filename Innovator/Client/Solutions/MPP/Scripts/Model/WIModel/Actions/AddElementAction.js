@@ -217,6 +217,7 @@ function(declare, AddElementAction, Enums) {
 				dialogWidth: 600,
 				dialogHeight: 600,
 				resizable: true,
+				title: 'Easy MPP Graphics',
 				search: searchCallback,
 				upload: uploadCallback.bind(this),
 				errorMessage: showAlert.bind(this)
