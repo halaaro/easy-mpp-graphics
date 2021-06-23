@@ -148,7 +148,7 @@ yarn test
 
 ## Credits
 
-Created by @haleytec for use with [PLMAccelerate](http://web.archive.org/web/20201126204707/https://www.infor.com/products/plm-accelerate) at [Watlow](https://www.watlow.com).
+Created by @halaaro for use with [PLMAccelerate](http://web.archive.org/web/20201126204707/https://www.infor.com/products/plm-accelerate).
 
 ## Prior Art
 
